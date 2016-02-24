@@ -22,6 +22,8 @@ function prototyper_profile_init() {
 	elgg_register_plugin_hook_handler('prototype', 'profile/edit', 'prototyper_profile_get_prototype_fields');
 
 	elgg_get_plugin_setting('profile:fields', 'profile', 'prototyper_profile_get_config_fields');
+
+	elgg_register_plugin_hook_handler('view_vars', 'input/form', 'prototyper_profile_filter_form_vars', 200);
 }
 
 /**
@@ -104,6 +106,25 @@ function prototyper_profile_get_config_fields($hook, $type, $return, $params) {
 		if (!array_key_exists($shortname, $return)) {
 			$return[$shortname] = $field->getType();
 		}
+	}
+
+	return $return;
+}
+
+/**
+ * Add validate flag to profile form
+ * 
+ * @param string $hook   "view_vars"
+ * @param string $type   "input/form"
+ * @param array  $return View vars
+ * @param array  $params Hook params
+ * @return array
+ */
+function prototyper_profile_filter_form_vars($hook, $type, $return, $params) {
+
+	$action_name = elgg_extract('action_name', $return);
+	if ($action_name == 'profile/edit') {
+		$return['validate'] = true;
 	}
 
 	return $return;

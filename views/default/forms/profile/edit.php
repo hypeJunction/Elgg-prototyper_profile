@@ -5,5 +5,4 @@
  * @uses vars['entity']
  */
 
-// This view is prototyped
-// @see /resources/profile/edit view
+echo hypePrototyper()->form->with($user, 'profile/edit')->viewBody();
