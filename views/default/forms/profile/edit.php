@@ -1,8 +1,4 @@
 <?php
-/**
- * Edit profile form
 
- * @uses vars['entity']
- */
-
-echo hypePrototyper()->form->with($user, 'profile/edit')->viewBody();
+$entity = elgg_extract('entity', $vars);
+echo hypePrototyper()->form->with($entity, 'profile/edit')->viewBody();
