@@ -1,3 +1,14 @@
+<a name="1.0.2"></a>
+## [1.0.2](https://github.com/hypeJunction/Elgg-prototyper_profile/compare/1.0.0...v1.0.2) (2016-02-25)
+
+
+### Bug Fixes
+
+* **forms:** pass correct entity to the prototype ([b94ad2b](https://github.com/hypeJunction/Elgg-prototyper_profile/commit/b94ad2b))
+* **views:** do not needlessly overwrite profile edit resource view ([7abfa47](https://github.com/hypeJunction/Elgg-prototyper_profile/commit/7abfa47))
+
+
+
 <a name="1.0.1"></a>
 ## [1.0.1](https://github.com/hypeJunction/Elgg-prototyper_profile/compare/1.0.0...v1.0.1) (2016-02-24)
 
