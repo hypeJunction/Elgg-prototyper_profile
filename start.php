@@ -1,13 +1,9 @@
 <?php
 
+elgg_register_event_handler('init', 'system', 'prototyper_profile_init');
+
 /**
  * AJAX tabs
- *
- * @author Ismayil Khayredinov <info@hypejunction.com>
- * @copyright Copyright (c) 2015, Ismayil Khayredinov
- */
-require_once __DIR__ . '/autoloader.php';
-
 elgg_register_event_handler('init', 'system', 'prototyper_profile_init');
 
 /**
@@ -16,12 +12,10 @@ elgg_register_event_handler('init', 'system', 'prototyper_profile_init');
  */
 function prototyper_profile_init() {
 
-	elgg_register_action('profile/prototype', __DIR__ . '/actions/profile/prototype.php', 'admin');
-	elgg_register_action('profile/edit', __DIR__ . '/actions/profile/edit.php');
 
 	elgg_register_plugin_hook_handler('prototype', 'profile/edit', 'prototyper_profile_get_prototype_fields');
 
-	elgg_get_plugin_setting('profile:fields', 'profile', 'prototyper_profile_get_config_fields');
+	elgg_register_plugin_hook_handler('profile:fields', 'profile', 'prototyper_profile_get_config_fields');
 
 	elgg_register_plugin_hook_handler('view_vars', 'input/form', 'prototyper_profile_filter_form_vars', 200);
 }
