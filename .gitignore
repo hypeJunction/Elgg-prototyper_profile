@@ -9,4 +9,4 @@ robots.txt
 /releases/
 /vendor/
 composer.lock
-Gemfile.lock
+Gemfile.locktests/.phpunit.result.cache
