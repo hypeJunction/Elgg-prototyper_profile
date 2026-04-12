@@ -5,7 +5,7 @@ return [
 		'name' => 'Profile Form Prototyper',
 		'version' => '4.0.0',
 		'dependencies' => [
-			'hypePrototyper' => [
+			'hypeprototyper' => [
 				'must_be_active' => true,
 			],
 		],
