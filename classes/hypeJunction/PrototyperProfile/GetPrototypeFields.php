@@ -28,7 +28,7 @@ class GetPrototypeFields {
 		}
 
 		if ($prototype) {
-			$prototype_fields = unserialize($prototype);
+			$prototype_fields = unserialize($prototype, ['allowed_classes' => false]);
 			$return = array_merge($return, (array) $prototype_fields);
 		} else {
 			$fields = (array) \elgg_get_config('profile_fields');
