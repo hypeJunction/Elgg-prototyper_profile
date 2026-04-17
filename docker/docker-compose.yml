@@ -27,13 +27,18 @@ services:
       # Plugin source is mounted read-write so composer install and test
       # artifacts written inside the container land back in the repo.
       - ..:/var/www/html/mod/${PLUGIN_ID}
+      # Dep plugins (read-only — not under test here).
+      - ../../hypeprototyper:/var/www/html/mod/hypeprototyper:ro
+      - ../../hypeapps:/var/www/html/mod/hypeapps:ro
+      - ../../hypelists:/var/www/html/mod/hypelists:ro
     environment:
       PLUGIN_ID: ${PLUGIN_ID}
       ELGG_DB_HOST: db
       ELGG_DB_NAME: elgg
       ELGG_DB_USER: elgg
       ELGG_DB_PASS: elgg
-      ELGG_SITE_URL: "http://localhost:${ELGG_PORT:-8480}/"
+      ELGG_DB_PREFIX: "elgg_"
+      ELGG_SITE_URL: "http://elgg/"
       ELGG_DATA_ROOT: "/var/www/data/"
       ELGG_ADMIN_EMAIL: "admin@example.com"
       ELGG_ADMIN_PASSWORD: "admin12345"
