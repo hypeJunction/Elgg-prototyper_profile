@@ -1,3 +1,14 @@
+<a name="4.0.0"></a>
+## [4.0.0] (2026-04-17)
+
+### Migration: Elgg 3.x → 4.x
+
+* Ported to Elgg 4.x Bootstrap architecture — dropped `start.php`, wired via `elgg-plugin.php` and invokable hook handler classes
+* Dropped `manifest.xml` — plugin metadata moved to `composer.json` (`elgg/elgg ^4.0`)
+* All hook callbacks converted to `__invoke(Hook $hook)` invokable classes
+* `unserialize()` hardened with `['allowed_classes' => false]`
+* Plugin ID lowercased to `prototyper_profile` in all callsites
+
 <a name="1.0.2"></a>
 ## [1.0.2](https://github.com/hypeJunction/Elgg-prototyper_profile/compare/1.0.0...v1.0.2) (2016-02-25)
 
