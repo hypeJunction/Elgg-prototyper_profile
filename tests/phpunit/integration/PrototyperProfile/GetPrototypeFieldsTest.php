@@ -35,7 +35,7 @@ class GetPrototypeFieldsTest extends IntegrationTestCase {
         $plugin = \elgg_get_plugin_from_id('prototyper_profile');
         if ($plugin) {
             // Ensure clean slate so default branch executes
-            $plugin->removeSetting('prototype:default');
+            $plugin->unsetSetting('prototype:default');
         }
 
         $user = $this->createUser();
@@ -52,7 +52,7 @@ class GetPrototypeFieldsTest extends IntegrationTestCase {
     public function testIncludesProfileFieldsFromConfig(): void {
         $plugin = \elgg_get_plugin_from_id('prototyper_profile');
         if ($plugin) {
-            $plugin->removeSetting('prototype:default');
+            $plugin->unsetSetting('prototype:default');
         }
 
         $profile_fields = (array) \elgg_get_config('profile_fields');
@@ -91,7 +91,7 @@ class GetPrototypeFieldsTest extends IntegrationTestCase {
             $this->assertArrayHasKey('custom_field', $result);
             $this->assertSame('text', $result['custom_field']['type']);
         } finally {
-            $plugin->removeSetting('prototype:default');
+            $plugin->unsetSetting('prototype:default');
         }
     }
 }

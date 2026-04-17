@@ -78,48 +78,44 @@ SETTINGS_VALUES
         \$app->bootCore();
         _elgg_services()->plugins->generateEntities();
 
-        // Resolve dep plugin IDs from the plugin's own metadata.
-        // Priority: elgg-plugin.php 'plugin.dependencies' (Elgg 4.x) then manifest.xml <requires type='plugin'>.
-        // IDs are lowercased to match mod/ directory names.
-        // Deps not present in mod/ are skipped with a warning — this naturally excludes
-        // deps that are unsafe to activate (e.g. unmigrated plugins not volume-mounted).
-        \$dep_ids = [];
-        \$plugin_file = '/var/www/html/mod/${PLUGIN_ID}/elgg-plugin.php';
-        if (file_exists(\$plugin_file)) {
-            \$manifest = include \$plugin_file;
-            foreach (array_keys(\$manifest['plugin']['dependencies'] ?? []) as \$id) {
-                \$dep_ids[] = strtolower(\$id);
+        // Activate all dep plugins found in mod/ (except the main plugin) using a
+        // retry loop so transitive deps (dep-of-dep) are handled automatically.
+        // Each pass activates whatever can succeed; plugins with unmet deps are
+        // retried in the next pass. After at most N passes (N = number of plugins)
+        // any remaining failures are reported and the script exits.
+        \$plugin_dirs = glob('/var/www/html/mod/*', GLOB_ONLYDIR) ?: [];
+        \$to_activate = [];
+        foreach (\$plugin_dirs as \$dir) {
+            \$id = basename(\$dir);
+            if (\$id === '${PLUGIN_ID}') {
+                continue; // main plugin activated last
             }
-        }
-        if (empty(\$dep_ids)) {
-            \$xml_file = '/var/www/html/mod/${PLUGIN_ID}/manifest.xml';
-            if (file_exists(\$xml_file)) {
-                \$xml = simplexml_load_file(\$xml_file);
-                foreach (\$xml->requires ?? [] as \$req) {
-                    if ((string)\$req->type === 'plugin') {
-                        \$dep_ids[] = strtolower((string)\$req->name);
-                    }
-                }
+            \$p = elgg_get_plugin_from_id(\$id);
+            if (\$p && !\$p->isActive()) {
+                \$to_activate[] = \$id;
             }
         }
 
-        foreach (\$dep_ids as \$dep_id) {
-            \$dep = elgg_get_plugin_from_id(\$dep_id);
-            if (!\$dep) {
-                echo 'WARNING: dep plugin ' . \$dep_id . ' not in mod/ — skipping (not mounted).' . PHP_EOL;
-                continue;
+        \$max_passes = count(\$to_activate) + 1;
+        for (\$pass = 0; \$pass < \$max_passes && !empty(\$to_activate); \$pass++) {
+            \$remaining = [];
+            foreach (\$to_activate as \$id) {
+                \$dep = elgg_get_plugin_from_id(\$id);
+                if (!\$dep || \$dep->isActive()) {
+                    continue;
+                }
+                try {
+                    \$dep->setPriority('last');
+                    \$dep->activate();
+                    echo 'Dep plugin ' . \$id . ' activated.' . PHP_EOL;
+                } catch (\Throwable \$e) {
+                    \$remaining[] = \$id; // retry after other deps are activated
+                }
             }
-            if (\$dep->isActive()) {
-                echo 'Dep plugin ' . \$dep_id . ' already active.' . PHP_EOL;
-                continue;
-            }
-            try {
-                \$dep->activate();
-                echo 'Dep plugin ' . \$dep_id . ' activated.' . PHP_EOL;
-            } catch (\Throwable \$e) {
-                echo 'FAILED to activate dep ' . \$dep_id . ': ' . \$e->getMessage() . PHP_EOL;
-                exit(1);
-            }
+            \$to_activate = \$remaining;
+        }
+        if (!empty(\$to_activate)) {
+            echo 'WARNING: could not activate deps (unmet deps or errors): ' . implode(', ', \$to_activate) . PHP_EOL;
         }
 
         // Activate the main plugin.

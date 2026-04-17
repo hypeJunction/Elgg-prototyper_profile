@@ -41,7 +41,7 @@ class PluginSettingsTest extends IntegrationTestCase {
             $decoded = unserialize($raw, ['allowed_classes' => false]);
             $this->assertSame($prototype, $decoded);
         } finally {
-            $plugin->removeSetting('prototype:default');
+            $plugin->unsetSetting('prototype:default');
         }
     }
 
@@ -62,8 +62,8 @@ class PluginSettingsTest extends IntegrationTestCase {
                 $plugin->getSetting('prototype:admin')
             );
         } finally {
-            $plugin->removeSetting('prototype:member');
-            $plugin->removeSetting('prototype:admin');
+            $plugin->unsetSetting('prototype:member');
+            $plugin->unsetSetting('prototype:admin');
         }
     }
 }
