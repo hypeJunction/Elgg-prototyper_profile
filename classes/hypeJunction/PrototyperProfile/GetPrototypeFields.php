@@ -9,8 +9,7 @@ use Elgg\Hook;
  */
 class GetPrototypeFields
 {
-    public function __invoke(Hook $hook)
-    {
+    public function __invoke(Hook $hook) {
 
         $return = $hook->getValue();
         $entity = $hook->getEntityParam();

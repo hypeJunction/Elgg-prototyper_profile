@@ -3,7 +3,7 @@
 $role = get_input('role', 'default');
 
 if (elgg_is_active_plugin('roles')) {
-	echo elgg_view('admin/appearance/profile_fields/filter', [
+echo elgg_view('admin/appearance/profile_fields/filter', [
 		'filter_context' => $role,
 	]);
 }

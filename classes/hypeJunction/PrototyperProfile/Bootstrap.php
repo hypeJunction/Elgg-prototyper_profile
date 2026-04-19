@@ -9,56 +9,48 @@ class Bootstrap extends PluginBootstrap
     /**
      * {@inheritdoc}
      */
-    public function load()
-    {
+    public function load() {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function boot()
-    {
+    public function boot() {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function init()
-    {
+    public function init() {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function ready()
-    {
+    public function ready() {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function shutdown()
-    {
+    public function shutdown() {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function activate()
-    {
+    public function activate() {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function deactivate()
-    {
+    public function deactivate() {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function upgrade()
-    {
+    public function upgrade() {
     }
 }
