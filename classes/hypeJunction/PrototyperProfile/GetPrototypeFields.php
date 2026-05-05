@@ -9,6 +9,10 @@ use Elgg\Hook;
  */
 class GetPrototypeFields
 {
+    /**
+     * @param Hook $hook
+     * @return mixed
+     */
     public function __invoke(Hook $hook) {
 
         $return = $hook->getValue();
@@ -31,7 +35,7 @@ class GetPrototypeFields
             $prototype_fields = unserialize($prototype, ['allowed_classes' => false]);
             $return = array_merge($return, (array) $prototype_fields);
         } else {
-            $fields = (array) \elgg_get_config('profile_fields');
+            $fields = (array) \elgg()->fields->get('user', 'user');
             $return['name'] = [
                 'type' => 'name',
                 'data_type' => 'attribute',

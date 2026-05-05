@@ -6,7 +6,7 @@
  */
 $user = elgg_get_page_owner_entity();
 
-$profile_fields = elgg_get_config('profile_fields');
+$profile_fields = elgg()->fields->get('user', 'user');
 
 echo '<div id="profile-details" class="elgg-body pll">';
 echo "<span class=\"hidden nickname p-nickname\">{$user->username}</span>";

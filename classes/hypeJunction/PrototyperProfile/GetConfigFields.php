@@ -9,6 +9,10 @@ use Elgg\Hook;
  */
 class GetConfigFields
 {
+    /**
+     * @param Hook $hook
+     * @return mixed
+     */
     public function __invoke(Hook $hook) {
 
         $return = (array) $hook->getValue();
