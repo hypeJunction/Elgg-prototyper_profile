@@ -4,53 +4,56 @@ namespace hypeJunction\PrototyperProfile;
 
 use Elgg\PluginBootstrap;
 
-class Bootstrap extends PluginBootstrap
-{
-    /**
-     * {@inheritdoc}
-     */
-    public function load() {
-    }
+/**
+ * Plugin bootstrap.
+ */
+class Bootstrap extends PluginBootstrap {
 
-    /**
-     * {@inheritdoc}
-     */
-    public function boot() {
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function load() {
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function init() {
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function boot() {
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function ready() {
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function init() {
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function shutdown() {
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function ready() {
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function activate() {
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function shutdown() {
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function deactivate() {
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function activate() {
+	}
 
-    /**
-     * {@inheritdoc}
-     */
-    public function upgrade() {
-    }
+	/**
+	 * {@inheritdoc}
+	 */
+	public function deactivate() {
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function upgrade() {
+	}
 }

@@ -16,10 +16,17 @@ class FilterFormVarsTest extends IntegrationTestCase {
     public function up() {}
     public function down() {}
 
+    /**
+     * @return string
+     */
     public function getPluginID(): string {
         return '';
     }
 
+    /**
+     * @param array $value
+     * @return Hook
+     */
     private function buildHook(array $value): Hook {
         $hook = $this->getMockBuilder(Hook::class)->getMock();
         $hook->method('getName')->willReturn('view_vars');
@@ -30,6 +37,9 @@ class FilterFormVarsTest extends IntegrationTestCase {
         return $hook;
     }
 
+    /**
+     * @return void
+     */
     public function testSetsValidateFlagForProfileEdit(): void {
         $handler = new FilterFormVars();
         $result = $handler($this->buildHook([
@@ -41,6 +51,9 @@ class FilterFormVarsTest extends IntegrationTestCase {
         $this->assertTrue($result['validate']);
     }
 
+    /**
+     * @return void
+     */
     public function testDoesNotSetValidateForOtherForms(): void {
         $handler = new FilterFormVars();
         $result = $handler($this->buildHook([
@@ -51,6 +64,9 @@ class FilterFormVarsTest extends IntegrationTestCase {
         $this->assertArrayNotHasKey('validate', $result);
     }
 
+    /**
+     * @return void
+     */
     public function testPreservesExistingVars(): void {
         $handler = new FilterFormVars();
         $result = $handler($this->buildHook([

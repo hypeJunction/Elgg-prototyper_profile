@@ -12,10 +12,10 @@ foreach ($roles as $role) {
 		continue;
 	}
 
-elgg_register_menu_item('filter', [
+	elgg_register_menu_item('filter', [
 		'name' => $role->name,
 		'text' => $role->getDisplayName(),
-'href' => elgg_http_add_url_query_elements(current_page_url(), [
+		'href' => elgg_http_add_url_query_elements(current_page_url(), [
 			'role' => $role->name,
 		]),
 		'selected' => $role->name == $context,

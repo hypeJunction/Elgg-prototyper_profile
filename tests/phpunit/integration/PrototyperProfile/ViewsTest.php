@@ -14,10 +14,16 @@ class ViewsTest extends IntegrationTestCase {
     public function up() {}
     public function down() {}
 
+    /**
+     * @return string
+     */
     public function getPluginID(): string {
         return '';
     }
 
+    /**
+     * @return void
+     */
     public function testViewFilesExist(): void {
         $pluginRoot = dirname(__DIR__, 4);
 
@@ -33,12 +39,18 @@ class ViewsTest extends IntegrationTestCase {
         }
     }
 
+    /**
+     * @return void
+     */
     public function testActionFilesExist(): void {
         $pluginRoot = dirname(__DIR__, 4);
         $this->assertFileExists($pluginRoot . '/actions/profile/edit.php');
         $this->assertFileExists($pluginRoot . '/actions/profile/prototype.php');
     }
 
+    /**
+     * @return void
+     */
     public function testLanguageFileParses(): void {
         $pluginRoot = dirname(__DIR__, 4);
         $strings = include $pluginRoot . '/languages/en.php';

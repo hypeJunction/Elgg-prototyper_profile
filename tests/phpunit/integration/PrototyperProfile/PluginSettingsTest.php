@@ -13,10 +13,16 @@ class PluginSettingsTest extends IntegrationTestCase {
     public function up() {}
     public function down() {}
 
+    /**
+     * @return string
+     */
     public function getPluginID(): string {
         return '';
     }
 
+    /**
+     * @return void
+     */
     public function testSetAndGetPrototypeSetting(): void {
         $plugin = \elgg_get_plugin_from_id('prototyper_profile');
         if (!$plugin) {
@@ -45,6 +51,9 @@ class PluginSettingsTest extends IntegrationTestCase {
         }
     }
 
+    /**
+     * @return void
+     */
     public function testRoleScopedSettings(): void {
         $plugin = \elgg_get_plugin_from_id('prototyper_profile');
         if (!$plugin) {

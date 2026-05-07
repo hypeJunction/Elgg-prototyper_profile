@@ -16,10 +16,18 @@ class GetPrototypeFieldsTest extends IntegrationTestCase {
     public function up() {}
     public function down() {}
 
+    /**
+     * @return string
+     */
     public function getPluginID(): string {
         return '';
     }
 
+    /**
+     * @param ElggUser $user
+     * @param array $value
+     * @return Hook
+     */
     private function buildHook(\ElggUser $user, array $value = []): Hook {
         $hook = $this->getMockBuilder(Hook::class)->getMock();
         $hook->method('getName')->willReturn('prototype');
@@ -31,6 +39,9 @@ class GetPrototypeFieldsTest extends IntegrationTestCase {
         return $hook;
     }
 
+    /**
+     * @return void
+     */
     public function testReturnsDefaultFieldsWhenNoPrototypeSetting(): void {
         $plugin = \elgg_get_plugin_from_id('prototyper_profile');
         if ($plugin) {
@@ -49,13 +60,16 @@ class GetPrototypeFieldsTest extends IntegrationTestCase {
         $this->assertSame('attribute', $result['name']['data_type']);
     }
 
+    /**
+     * @return void
+     */
     public function testIncludesProfileFieldsFromConfig(): void {
         $plugin = \elgg_get_plugin_from_id('prototyper_profile');
         if ($plugin) {
             $plugin->unsetSetting('prototype:default');
         }
 
-        $profile_fields = (array) \elgg_get_config('profile_fields');
+        $profile_fields = (array) \elgg()->fields->get('user', 'user');
         $user = $this->createUser();
 
         $handler = new GetPrototypeFields();
@@ -68,6 +82,9 @@ class GetPrototypeFieldsTest extends IntegrationTestCase {
         }
     }
 
+    /**
+     * @return void
+     */
     public function testReturnsSavedPrototypeWhenSet(): void {
         $plugin = \elgg_get_plugin_from_id('prototyper_profile');
         if (!$plugin) {

@@ -7,33 +7,35 @@ use Elgg\Hook;
 /**
  * Populates the profile fields config with prototyped values
  */
-class GetConfigFields
-{
-    /**
-     * @param Hook $hook
-     * @return mixed
-     */
-    public function __invoke(Hook $hook) {
+class GetConfigFields {
 
-        $return = (array) $hook->getValue();
+	/**
+	 * Merge prototyped profile fields into the registered fields config.
+	 *
+	 * @param Hook $hook 'config' hook returning the user fields registry
+	 * @return array
+	 */
+	public function __invoke(Hook $hook) {
 
-        $user = \hypePrototyper()->entityFactory->build(['type' => 'user']);
-        $fields = \hypePrototyper()->prototype->fields($user, 'profile/edit');
+		$return = (array) $hook->getValue();
 
-        foreach ($fields as $field) {
-            /* @var $field \hypeJunction\Prototyper\Elements\Field */
+		$user = \hypePrototyper()->entityFactory->build(['type' => 'user']);
+		$fields = \hypePrototyper()->prototype->fields($user, 'profile/edit');
 
-            if ($field->getDataType() !== 'metadata') {
-                // only add metadata fields
-                continue;
-            }
+		foreach ($fields as $field) {
+			/* @var $field \hypeJunction\Prototyper\Elements\Field */
 
-            $shortname = $field->getShortname();
-            if (!array_key_exists($shortname, $return)) {
-                $return[$shortname] = $field->getType();
-            }
-        }
+			if ($field->getDataType() !== 'metadata') {
+				// only add metadata fields
+				continue;
+			}
 
-        return $return;
-    }
+			$shortname = $field->getShortname();
+			if (!array_key_exists($shortname, $return)) {
+				$return[$shortname] = $field->getType();
+			}
+		}
+
+		return $return;
+	}
 }

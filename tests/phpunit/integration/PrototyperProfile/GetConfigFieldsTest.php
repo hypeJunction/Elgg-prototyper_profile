@@ -17,10 +17,16 @@ class GetConfigFieldsTest extends IntegrationTestCase {
     public function up() {}
     public function down() {}
 
+    /**
+     * @return string
+     */
     public function getPluginID(): string {
         return '';
     }
 
+    /**
+     * @return void
+     */
     public function testHookReturnsArrayWhenPrototyperAvailable(): void {
         if (!function_exists('hypePrototyper')) {
             $this->markTestSkipped('hypePrototyper dependency not loaded in test container');

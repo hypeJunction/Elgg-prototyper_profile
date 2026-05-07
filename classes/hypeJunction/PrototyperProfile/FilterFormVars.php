@@ -7,21 +7,23 @@ use Elgg\Hook;
 /**
  * Add validate flag to profile form
  */
-class FilterFormVars
-{
-    /**
-     * @param Hook $hook
-     * @return mixed
-     */
-    public function __invoke(Hook $hook) {
+class FilterFormVars {
 
-        $return = (array) $hook->getValue();
+	/**
+	 * Inject `validate` flag into the profile/edit form vars.
+	 *
+	 * @param Hook $hook 'form:prepare:fields' hook with current form vars in value
+	 * @return array
+	 */
+	public function __invoke(Hook $hook) {
 
-        $action_name = \elgg_extract('action_name', $return);
-        if ($action_name == 'profile/edit') {
-            $return['validate'] = true;
-        }
+		$return = (array) $hook->getValue();
 
-        return $return;
-    }
+		$action_name = \elgg_extract('action_name', $return);
+		if ($action_name == 'profile/edit') {
+			$return['validate'] = true;
+		}
+
+		return $return;
+	}
 }

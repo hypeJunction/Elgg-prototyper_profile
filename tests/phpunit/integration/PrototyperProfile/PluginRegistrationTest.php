@@ -12,15 +12,24 @@ class PluginRegistrationTest extends IntegrationTestCase {
     public function up() {}
     public function down() {}
 
+    /**
+     * @return string
+     */
     public function getPluginID(): string {
         return '';
     }
 
+    /**
+     * @return void
+     */
     public function testPluginIsInstalled(): void {
         $plugin = \elgg_get_plugin_from_id('prototyper_profile');
         $this->assertNotNull($plugin, 'prototyper_profile plugin must be installed at mod/prototyper_profile');
     }
 
+    /**
+     * @return void
+     */
     public function testElggPluginConfigParses(): void {
         $pluginRoot = dirname(__DIR__, 4);
         $config = include $pluginRoot . '/elgg-plugin.php';
@@ -32,6 +41,9 @@ class PluginRegistrationTest extends IntegrationTestCase {
         $this->assertArrayHasKey('hooks', $config);
     }
 
+    /**
+     * @return void
+     */
     public function testBootstrapClassLoads(): void {
         $this->assertTrue(class_exists(Bootstrap::class));
         $bootstrap = new \ReflectionClass(Bootstrap::class);
@@ -42,12 +54,18 @@ class PluginRegistrationTest extends IntegrationTestCase {
         $this->assertTrue($bootstrap->hasMethod('init'));
     }
 
+    /**
+     * @return void
+     */
     public function testHookHandlerClassesExist(): void {
         $this->assertTrue(class_exists(GetConfigFields::class));
         $this->assertTrue(class_exists(FilterFormVars::class));
         $this->assertTrue(class_exists(GetPrototypeFields::class));
     }
 
+    /**
+     * @return void
+     */
     public function testActionsRegisteredInConfig(): void {
         $pluginRoot = dirname(__DIR__, 4);
         $config = include $pluginRoot . '/elgg-plugin.php';
