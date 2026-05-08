@@ -38,7 +38,7 @@ class PluginRegistrationTest extends IntegrationTestCase {
         $this->assertArrayHasKey('plugin', $config);
         $this->assertArrayHasKey('bootstrap', $config);
         $this->assertArrayHasKey('actions', $config);
-        $this->assertArrayHasKey('hooks', $config);
+        $this->assertArrayHasKey('events', $config);
     }
 
     /**

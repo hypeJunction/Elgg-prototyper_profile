@@ -2,11 +2,11 @@
 
 namespace hypeJunction\PrototyperProfile;
 
-use Elgg\Hook;
+use Elgg\Event;
 use Elgg\IntegrationTestCase;
 
 /**
- * Tests the GetConfigFields hook handler which enriches `profile_fields`
+ * Tests the GetConfigFields event handler which enriches `profile_fields`
  * config with fields defined by the prototyper for the user profile/edit form.
  *
  * This handler depends on the hypePrototyper plugin. When it is not active,
@@ -32,19 +32,19 @@ class GetConfigFieldsTest extends IntegrationTestCase {
             $this->markTestSkipped('hypePrototyper dependency not loaded in test container');
         }
 
-        $hook = $this->getMockBuilder(Hook::class)->getMock();
-        $hook->method('getName')->willReturn('profile:fields');
-        $hook->method('getType')->willReturn('profile');
-        $hook->method('getValue')->willReturn([
+        $event = $this->getMockBuilder(Event::class)->disableOriginalConstructor()->getMock();
+        $event->method('getName')->willReturn('profile:fields');
+        $event->method('getType')->willReturn('profile');
+        $event->method('getValue')->willReturn([
             'existing' => 'text',
         ]);
-        $hook->method('getParams')->willReturn([]);
-        $hook->method('getParam')->willReturn(null);
+        $event->method('getParams')->willReturn([]);
+        $event->method('getParam')->willReturn(null);
 
         $handler = new GetConfigFields();
 
         try {
-            $result = $handler($hook);
+            $result = $handler($event);
         } catch (\Throwable $e) {
             $this->markTestSkipped('hypePrototyper runtime not fully bootstrapped: ' . $e->getMessage());
         }

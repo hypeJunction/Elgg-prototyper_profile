@@ -2,11 +2,11 @@
 
 namespace hypeJunction\PrototyperProfile;
 
-use Elgg\Hook;
+use Elgg\Event;
 use Elgg\IntegrationTestCase;
 
 /**
- * Tests the GetPrototypeFields hook handler.
+ * Tests the GetPrototypeFields event handler.
  *
  * This handler returns the configured prototype for a role, or a default
  * set built from `profile_fields` when no prototype is configured.
@@ -26,17 +26,17 @@ class GetPrototypeFieldsTest extends IntegrationTestCase {
     /**
      * @param ElggUser $user
      * @param array $value
-     * @return Hook
+     * @return Event
      */
-    private function buildHook(\ElggUser $user, array $value = []): Hook {
-        $hook = $this->getMockBuilder(Hook::class)->getMock();
-        $hook->method('getName')->willReturn('prototype');
-        $hook->method('getType')->willReturn('profile/edit');
-        $hook->method('getValue')->willReturn($value);
-        $hook->method('getEntityParam')->willReturn($user);
-        $hook->method('getParam')->willReturn(null);
-        $hook->method('getParams')->willReturn(['entity' => $user]);
-        return $hook;
+    private function buildHook(\ElggUser $user, array $value = []): Event {
+        $event = $this->getMockBuilder(Event::class)->disableOriginalConstructor()->getMock();
+        $event->method('getName')->willReturn('prototype');
+        $event->method('getType')->willReturn('profile/edit');
+        $event->method('getValue')->willReturn($value);
+        $event->method('getEntityParam')->willReturn($user);
+        $event->method('getParam')->willReturn(null);
+        $event->method('getParams')->willReturn(['entity' => $user]);
+        return $event;
     }
 
     /**
