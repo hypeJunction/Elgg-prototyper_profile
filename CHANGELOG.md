@@ -1,3 +1,13 @@
+<a name="5.0.0"></a>
+## [5.0.0] (2026-05-08)
+
+### Migration: Elgg 4.x → 5.x
+
+* Unified events model: `'hooks'` key renamed to `'events'` in `elgg-plugin.php`
+* Handler signatures updated: `Elgg\Hook` → `Elgg\Event` in all handler classes
+* `get_current_language()` replaced with `elgg_get_current_language()`
+* PHP requirement bumped to `>=8.2`, Elgg requirement to `^5.0`
+
 <a name="4.0.0"></a>
 ## [4.0.0] (2026-04-17)
 
