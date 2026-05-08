@@ -42,7 +42,7 @@ class GetPrototypeFields {
 				'type' => 'name',
 				'data_type' => 'attribute',
 				'label' => [
-					\get_current_language() => \elgg_echo('user:name:label'),
+					\elgg_get_current_language() => \elgg_echo('user:name:label'),
 				],
 				'help' => false,
 				'validation_rules' => [
@@ -54,7 +54,7 @@ class GetPrototypeFields {
 					'type' => $input_type,
 					'data_type' => 'metadata',
 					'label' => [
-						\get_current_language() => \elgg_echo("profile:$shortname"),
+						\elgg_get_current_language() => \elgg_echo("profile:$shortname"),
 					],
 					'help' => false,
 				];
