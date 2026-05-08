@@ -3,7 +3,7 @@
 return [
 	'plugin' => [
 		'name' => 'Profile Form Prototyper',
-		'version' => '4.0.0',
+		'version' => '5.0.0',
 		'dependencies' => [
 			'hypeprototyper' => [
 				'must_be_active' => true,
@@ -17,7 +17,7 @@ return [
 		],
 		'profile/edit' => [],
 	],
-	'hooks' => [
+	'events' => [
 		'prototype' => [
 			'profile/edit' => [
 				\hypeJunction\PrototyperProfile\GetPrototypeFields::class => [],

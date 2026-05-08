@@ -2,7 +2,7 @@
 
 namespace hypeJunction\PrototyperProfile;
 
-use Elgg\Hook;
+use Elgg\Event;
 
 /**
  * Returns prototyped fields
@@ -12,13 +12,13 @@ class GetPrototypeFields {
 	/**
 	 * Resolve the prototyped field set for the user being edited.
 	 *
-	 * @param Hook $hook 'fields' hook scoped to a profile entity
+	 * @param Event $event 'prototype','profile/edit' event scoped to a profile entity
 	 * @return array
 	 */
-	public function __invoke(Hook $hook) {
+	public function __invoke(Event $event) {
 
-		$return = $hook->getValue();
-		$entity = $hook->getEntityParam();
+		$return = $event->getValue();
+		$entity = $event->getEntityParam();
 
 		$role = false;
 		if (\elgg_is_active_plugin('roles')) {

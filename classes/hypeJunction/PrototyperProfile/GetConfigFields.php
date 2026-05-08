@@ -2,7 +2,7 @@
 
 namespace hypeJunction\PrototyperProfile;
 
-use Elgg\Hook;
+use Elgg\Event;
 
 /**
  * Populates the profile fields config with prototyped values
@@ -12,12 +12,12 @@ class GetConfigFields {
 	/**
 	 * Merge prototyped profile fields into the registered fields config.
 	 *
-	 * @param Hook $hook 'config' hook returning the user fields registry
+	 * @param Event $event 'profile:fields','profile' event returning the user fields registry
 	 * @return array
 	 */
-	public function __invoke(Hook $hook) {
+	public function __invoke(Event $event) {
 
-		$return = (array) $hook->getValue();
+		$return = (array) $event->getValue();
 
 		$user = \hypePrototyper()->entityFactory->build(['type' => 'user']);
 		$fields = \hypePrototyper()->prototype->fields($user, 'profile/edit');
