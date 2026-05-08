@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-# Per-plugin Elgg 4.x install + activation script.
+# Per-plugin Elgg 5.x install + activation script.
 # PLUGIN_ID must be set in the container environment (passed by docker-compose
 # from <plugin>/docker/.env). Only that one plugin is activated — no fleet
 # activation, no plugin-order.txt, no cross-plugin side effects.
@@ -21,7 +21,7 @@ echo "MySQL is ready."
 cd /var/www/html
 
 if [ ! -f /var/www/html/.elgg-installed ]; then
-    echo "Installing Elgg 4.x..."
+    echo "Installing Elgg 5.x..."
 
     mkdir -p elgg-config
     cat > elgg-config/settings.php <<'SETTINGS_TEMPLATE'
@@ -56,7 +56,7 @@ SETTINGS_VALUES
             'dbhost' => '${ELGG_DB_HOST:-db}',
             'dbport' => '3306',
             'dbprefix' => 'elgg_',
-            'sitename' => 'Elgg 4.x Plugin Test',
+            'sitename' => 'Elgg 5.x Plugin Test',
             'siteemail' => '${ELGG_ADMIN_EMAIL:-admin@example.com}',
             'wwwroot' => '${ELGG_SITE_URL:-http://localhost:8480/}',
             'dataroot' => '${ELGG_DATA_ROOT:-/var/www/data/}',
@@ -68,8 +68,16 @@ SETTINGS_VALUES
 
         \$installer = new \ElggInstaller();
         \$installer->batchInstall(\$params);
-        echo 'Elgg 4.x installed successfully.' . PHP_EOL;
+        echo 'Elgg 5.x installed successfully.' . PHP_EOL;
     " 2>&1 || echo "Install completed (check for errors above)."
+
+    echo "Symlinking Elgg core plugins into mod/..."
+    for core_plugin in /var/www/html/vendor/elgg/elgg/mod/*/; do
+        plugin_name=$(basename "$core_plugin")
+        if [ ! -e "/var/www/html/mod/${plugin_name}" ]; then
+            ln -s "$core_plugin" "/var/www/html/mod/${plugin_name}"
+        fi
+    done
 
     echo "Activating plugins..."
     php -r "
@@ -78,44 +86,48 @@ SETTINGS_VALUES
         \$app->bootCore();
         _elgg_services()->plugins->generateEntities();
 
-        // Activate all dep plugins found in mod/ (except the main plugin) using a
-        // retry loop so transitive deps (dep-of-dep) are handled automatically.
-        // Each pass activates whatever can succeed; plugins with unmet deps are
-        // retried in the next pass. After at most N passes (N = number of plugins)
-        // any remaining failures are reported and the script exits.
-        \$plugin_dirs = glob('/var/www/html/mod/*', GLOB_ONLYDIR) ?: [];
-        \$to_activate = [];
-        foreach (\$plugin_dirs as \$dir) {
-            \$id = basename(\$dir);
-            if (\$id === '${PLUGIN_ID}') {
-                continue; // main plugin activated last
+        // Resolve dep plugin IDs from the plugin's own metadata.
+        // Priority: elgg-plugin.php 'plugin.dependencies' (Elgg 5.x) then manifest.xml <requires type='plugin'>.
+        // IDs are lowercased to match mod/ directory names.
+        // Deps not present in mod/ are skipped with a warning — this naturally excludes
+        // deps that are unsafe to activate (e.g. unmigrated plugins not volume-mounted).
+        \$dep_ids = [];
+        \$plugin_file = '/var/www/html/mod/${PLUGIN_ID}/elgg-plugin.php';
+        if (file_exists(\$plugin_file)) {
+            \$manifest = include \$plugin_file;
+            foreach (array_keys(\$manifest['plugin']['dependencies'] ?? []) as \$id) {
+                \$dep_ids[] = strtolower(\$id);
             }
-            \$p = elgg_get_plugin_from_id(\$id);
-            if (\$p && !\$p->isActive()) {
-                \$to_activate[] = \$id;
+        }
+        if (empty(\$dep_ids)) {
+            \$xml_file = '/var/www/html/mod/${PLUGIN_ID}/manifest.xml';
+            if (file_exists(\$xml_file)) {
+                \$xml = simplexml_load_file(\$xml_file);
+                foreach (\$xml->requires ?? [] as \$req) {
+                    if ((string)\$req->type === 'plugin') {
+                        \$dep_ids[] = strtolower((string)\$req->name);
+                    }
+                }
             }
         }
 
-        \$max_passes = count(\$to_activate) + 1;
-        for (\$pass = 0; \$pass < \$max_passes && !empty(\$to_activate); \$pass++) {
-            \$remaining = [];
-            foreach (\$to_activate as \$id) {
-                \$dep = elgg_get_plugin_from_id(\$id);
-                if (!\$dep || \$dep->isActive()) {
-                    continue;
-                }
-                try {
-                    \$dep->setPriority('last');
-                    \$dep->activate();
-                    echo 'Dep plugin ' . \$id . ' activated.' . PHP_EOL;
-                } catch (\Throwable \$e) {
-                    \$remaining[] = \$id; // retry after other deps are activated
-                }
+        foreach (\$dep_ids as \$dep_id) {
+            \$dep = elgg_get_plugin_from_id(\$dep_id);
+            if (!\$dep) {
+                echo 'WARNING: dep plugin ' . \$dep_id . ' not in mod/ — skipping (not mounted).' . PHP_EOL;
+                continue;
             }
-            \$to_activate = \$remaining;
-        }
-        if (!empty(\$to_activate)) {
-            echo 'WARNING: could not activate deps (unmet deps or errors): ' . implode(', ', \$to_activate) . PHP_EOL;
+            if (\$dep->isActive()) {
+                echo 'Dep plugin ' . \$dep_id . ' already active.' . PHP_EOL;
+                continue;
+            }
+            try {
+                \$dep->activate();
+                echo 'Dep plugin ' . \$dep_id . ' activated.' . PHP_EOL;
+            } catch (\Throwable \$e) {
+                echo 'FAILED to activate dep ' . \$dep_id . ': ' . \$e->getMessage() . PHP_EOL;
+                exit(1);
+            }
         }
 
         // Activate the main plugin.
@@ -137,6 +149,14 @@ SETTINGS_VALUES
         }
     " 2>&1 || echo "Plugin activation completed (check for errors above)."
 
+    php -r "
+        require_once 'vendor/autoload.php';
+        \$app = \Elgg\Application::getInstance();
+        \$app->bootCore();
+        elgg_clear_caches();
+        echo 'Caches cleared.' . PHP_EOL;
+    " 2>&1
+
     # Hand the data root over to the Apache user. The installer ran as
     # root (entrypoint context) and left every cache subdirectory
     # root-owned, which makes Phpfastcache throw IOException on the
@@ -145,7 +165,7 @@ SETTINGS_VALUES
     chmod -R u+rwX,g+rX,o+rX "${ELGG_DATA_ROOT:-/var/www/data/}"
 
     touch /var/www/html/.elgg-installed
-    echo "Elgg 4.x setup complete."
+    echo "Elgg 5.x setup complete."
 fi
 
 echo "Starting Apache..."
