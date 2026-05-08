@@ -58,7 +58,7 @@ SETTINGS_VALUES
             'dbprefix' => 'elgg_',
             'sitename' => 'Elgg 5.x Plugin Test',
             'siteemail' => '${ELGG_ADMIN_EMAIL:-admin@example.com}',
-            'wwwroot' => '${ELGG_SITE_URL:-http://localhost:8480/}',
+            'wwwroot' => '${ELGG_SITE_URL:-http://localhost/}',
             'dataroot' => '${ELGG_DATA_ROOT:-/var/www/data/}',
             'displayname' => 'Admin',
             'email' => '${ELGG_ADMIN_EMAIL:-admin@example.com}',
@@ -66,10 +66,14 @@ SETTINGS_VALUES
             'password' => '${ELGG_ADMIN_PASSWORD:-admin12345}',
         ];
 
-        \$installer = new \ElggInstaller();
-        \$installer->batchInstall(\$params);
-        echo 'Elgg 5.x installed successfully.' . PHP_EOL;
-    " 2>&1 || echo "Install completed (check for errors above)."
+        try {
+            \$installer = new \ElggInstaller();
+            \$installer->batchInstall(\$params);
+            echo 'Elgg 5.x installed successfully.' . PHP_EOL;
+        } catch (\Throwable \$e) {
+            echo 'Install error (' . get_class(\$e) . '): ' . \$e->getMessage() . PHP_EOL;
+        }
+    " 2>&1
 
     echo "Symlinking Elgg core plugins into mod/..."
     for core_plugin in /var/www/html/vendor/elgg/elgg/mod/*/; do
@@ -138,6 +142,31 @@ SETTINGS_VALUES
     # root (entrypoint context) and left every cache subdirectory
     # root-owned, which makes Phpfastcache throw IOException on the
     # first request and the site renders Elgg's "fatal error" stub.
+    # Ensure admin user exists — batchInstall may fail to create it on partial re-installs.
+    php -r "
+        require_once 'vendor/autoload.php';
+        \$app = Elgg\Application::getInstance();
+        \$app->bootCore();
+        if (!elgg_get_user_by_username('admin')) {
+            try {
+                \$user = elgg_register_user([
+                    'username' => 'admin',
+                    'password' => '${ELGG_ADMIN_PASSWORD:-admin12345}',
+                    'name' => 'Admin',
+                    'email' => '${ELGG_ADMIN_EMAIL:-admin@example.com}',
+                ]);
+                elgg_call(ELGG_IGNORE_ACCESS, function() use (\$user) { \$user->makeAdmin(); });
+                \$user->validated = true;
+                \$user->save();
+                echo 'Admin user created (guid: ' . \$user->guid . ').' . PHP_EOL;
+            } catch (\Throwable \$e) {
+                echo 'Admin create error: ' . \$e->getMessage() . PHP_EOL;
+            }
+        } else {
+            echo 'Admin user already exists.' . PHP_EOL;
+        }
+    " 2>&1
+
     chown -R www-data:www-data "${ELGG_DATA_ROOT:-/var/www/data/}"
     chmod -R u+rwX,g+rX,o+rX "${ELGG_DATA_ROOT:-/var/www/data/}"
 

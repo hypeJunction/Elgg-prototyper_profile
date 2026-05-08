@@ -15,7 +15,7 @@ foreach ($roles as $role) {
 	elgg_register_menu_item('filter', [
 		'name' => $role->name,
 		'text' => $role->getDisplayName(),
-		'href' => elgg_http_add_url_query_elements(current_page_url(), [
+		'href' => elgg_http_add_url_query_elements(elgg_get_current_url(), [
 			'role' => $role->name,
 		]),
 		'selected' => $role->name == $context,
