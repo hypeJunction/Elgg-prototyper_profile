@@ -10,7 +10,7 @@ if (elgg_is_active_plugin('roles')) {
 
 echo elgg_view_form('prototyper/edit', [
 	'action' => '/action/profile/prototype',
-		], [
+], [
 	'action' => 'profile/edit',
 	'attributes' => [
 		'type' => 'user',

@@ -1,3 +1,39 @@
+## Elgg 7.x Migration (2026-05-09)
+
+- Bumped `elgg/elgg` requirement to `~7.0.0`, `php` to `>=8.3`
+- Docker test stack added for Elgg 7.x (docker/elgg7/) with PHP 8.3, MySQL 8.0, PHPUnit 10.5+
+- No PHP or CSS breaking changes (no CSS Crush syntax, no direct ElggObject instantiation, no removed APIs used)
+- No data migration needed
+
+## Elgg 6.x Migration (2026-05-09)
+
+- Bumped `elgg/elgg` to `~6.1.0`, `php` to `>=8.1`, added `ext-intl`
+- No JS files — no AMD→ESM conversion needed
+- No deprecated PHP hook functions
+- Added docker/elgg6/ test stack
+- No data migration needed
+
+<a name="5.0.0"></a>
+## [5.0.0] (2026-05-08)
+
+### Migration: Elgg 4.x → 5.x
+
+* Unified events model: `'hooks'` key renamed to `'events'` in `elgg-plugin.php`
+* Handler signatures updated: `Elgg\Hook` → `Elgg\Event` in all handler classes
+* `get_current_language()` replaced with `elgg_get_current_language()`
+* PHP requirement bumped to `>=8.2`, Elgg requirement to `^5.0`
+
+<a name="4.0.0"></a>
+## [4.0.0] (2026-04-17)
+
+### Migration: Elgg 3.x → 4.x
+
+* Ported to Elgg 4.x Bootstrap architecture — dropped `start.php`, wired via `elgg-plugin.php` and invokable hook handler classes
+* Dropped `manifest.xml` — plugin metadata moved to `composer.json` (`elgg/elgg ^4.0`)
+* All hook callbacks converted to `__invoke(Hook $hook)` invokable classes
+* `unserialize()` hardened with `['allowed_classes' => false]`
+* Plugin ID lowercased to `prototyper_profile` in all callsites
+
 <a name="1.0.2"></a>
 ## [1.0.2](https://github.com/hypeJunction/Elgg-prototyper_profile/compare/1.0.0...v1.0.2) (2016-02-25)
 

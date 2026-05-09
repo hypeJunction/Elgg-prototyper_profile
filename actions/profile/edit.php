@@ -4,8 +4,7 @@ $guid = get_input('guid');
 $user = get_entity($guid);
 
 if (!$user || !($user instanceof ElggUser) || !$user->canEdit()) {
-	register_error(elgg_echo('profile:noaccess'));
-	forward(REFERER);
+	return elgg_error_response(elgg_echo('profile:noaccess'));
 }
 
 try {
@@ -14,26 +13,23 @@ try {
 		$result = $action->update();
 	}
 } catch (\hypeJunction\Exceptions\ActionValidationException $ex) {
-	register_error(elgg_echo('prototyper:validate:error'));
-	forward(REFERER);
-} catch (\IOException $ex) {
-	register_error(elgg_echo('prototyper:io:error', [$ex->getMessage()]));
-	forward(REFERER);
+	return elgg_error_response(elgg_echo('prototyper:validate:error'));
+} catch (\Elgg\Exceptions\FileSystem\IOException $ex) {
+	return elgg_error_response(elgg_echo('prototyper:io:error', [$ex->getMessage()]));
 } catch (\Exception $ex) {
-	register_error(elgg_echo('prototyper:handle:error', [$ex->getMessage()]));
-	forward(REFERER);
+	return elgg_error_response(elgg_echo('prototyper:handle:error', [$ex->getMessage()]));
 }
 
 if ($result) {
+	$output = '';
 	if (elgg_is_xhr()) {
-		echo $action->result->output;
+		$output = (string) $action->result->output;
 	}
+
 	// Notify of profile update
 	elgg_trigger_event('profileupdate', $user->type, $user);
 
-	system_message(elgg_echo("profile:saved"));
-	forward($user->getURL());
-} else {
-	register_error(elgg_echo('prototyper:action:error'));
-	forward(REFERER);
+	return elgg_ok_response($output, elgg_echo('profile:saved'), $user->getURL());
 }
+
+return elgg_error_response(elgg_echo('prototyper:action:error'));

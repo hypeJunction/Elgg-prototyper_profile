@@ -2,19 +2,36 @@
 	"name": "hypejunction/prototyper_profile",
 	"type": "elgg-plugin",
 	"description": "hypePrototyper integration for Elgg user profiles",
-	"homepage": "http://hypejunction.com",
+	"homepage": "https://github.com/hypeJunction/Elgg-prototyper_profile",
 	"keywords": [
 		"elgg", "plugin", "profile", "profile builder", "form builder", "prototyper"
 	],
-	"license": "GPL-2.0",
+	"license": "GPL-2.0-only",
 	"authors": [
 		{
 			"name": "Ismayil Khayredinov",
-			"email": "info@hypejunction.com"
+			"email": "ismayil.khayredinov@gmail.com"
 		}
 	],
-	"require-dev": {
-		"composer/installers": "1.*"
+	"extra": {
+		"elgg-plugin": {
+			"id": "prototyper_profile"
+		}
+	},
+	"require": {
+		"php": ">=8.3",
+		"ext-intl": "*",
+		"elgg/elgg": "~7.0.0",
+		"composer/installers": "^2.0"
+	},
+	"config": {
+		"allow-plugins": {
+			"composer/installers": true
+		}
+	},
+	"autoload": {
+		"psr-4": {
+			"hypeJunction\\PrototyperProfile\\": "classes/hypeJunction/PrototyperProfile/"
+		}
 	}
 }
-
