@@ -59,6 +59,10 @@ hypePrototyper in turn requires `hypeapps` and `hypelists`.
 
 Prototype field layouts are stored as serialized arrays in plugin settings with keys `prototype:<role_name>` (e.g. `prototype:default`, `prototype:member`). Unserialized with `allowed_classes => false` for safety.
 
+## Seeding
+
+No seeder required. This plugin owns no entity types, subtypes, or persistent relationship schemas — it is a pure UI/utility/admin plugin with no persisted entity surface of its own.
+
 ## Migration Notes (4.x → 5.x)
 
 - `'hooks'` key in `elgg-plugin.php` renamed to `'events'` (Elgg 5.x unified events model)
