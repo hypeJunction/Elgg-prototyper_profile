@@ -3,7 +3,7 @@
 return [
 	'plugin' => [
 		'name' => 'Profile Form Prototyper',
-		'version' => '5.0.0',
+		'version' => '7.0.0',
 		'dependencies' => [
 			'hypeprototyper' => [
 				'must_be_active' => true,
