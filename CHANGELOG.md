@@ -1,3 +1,10 @@
+## Elgg 7.x Migration (2026-05-09)
+
+- Bumped `elgg/elgg` requirement to `~7.0.0`, `php` to `>=8.3`
+- Docker test stack added for Elgg 7.x (docker/elgg7/) with PHP 8.3, MySQL 8.0, PHPUnit 10.5+
+- No PHP or CSS breaking changes (no CSS Crush syntax, no direct ElggObject instantiation, no removed APIs used)
+- No data migration needed
+
 ## Elgg 6.x Migration (2026-05-09)
 
 - Bumped `elgg/elgg` to `~6.1.0`, `php` to `>=8.1`, added `ext-intl`

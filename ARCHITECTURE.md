@@ -1,4 +1,4 @@
-# prototyper_profile — Architecture (Elgg 6.x)
+# prototyper_profile — Architecture (Elgg 7.x)
 
 ## Summary
 
@@ -29,7 +29,7 @@ prototyper_profile/
 │   └── profile/details.php      # Profile details view (banned state + aboutme)
 ├── languages/                    # i18n strings
 ├── elgg-plugin.php               # Plugin manifest — events, actions, bootstrap, deps
-└── composer.json                 # Elgg 5.x metadata (elgg/elgg ^5.0)
+└── composer.json                 # Elgg 7.x metadata (elgg/elgg ~7.0.0)
 ```
 
 ## Registered Events
@@ -58,6 +58,21 @@ hypePrototyper in turn requires `hypeapps` and `hypelists`.
 ## Data Storage
 
 Prototype field layouts are stored as serialized arrays in plugin settings with keys `prototype:<role_name>` (e.g. `prototype:default`, `prototype:member`). Unserialized with `allowed_classes => false` for safety.
+
+## Migration Notes (6.x → 7.x)
+
+- `elgg/elgg ~7.0.0`, `php >=8.3` in `composer.json`.
+- Docker test stack added for Elgg 7.x (docker/elgg7/) with PHP 8.3.
+- No breaking changes: no CSS Crush syntax, no direct `ElggObject` instantiation, no removed Elgg APIs.
+- No data migration needed.
+
+## Migration Notes (5.x → 6.x)
+
+- `elgg/elgg ~6.1.0`, `php >=8.1`, `ext-intl` added in `composer.json`.
+- No JS files — no AMD→ESM conversion needed.
+- No deprecated PHP hook functions.
+- Docker test stack added for Elgg 6.x (docker/elgg6/).
+- No data migration needed.
 
 ## Migration Notes (4.x → 5.x)
 
