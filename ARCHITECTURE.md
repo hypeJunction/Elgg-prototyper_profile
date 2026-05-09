@@ -1,4 +1,4 @@
-# prototyper_profile — Architecture (Elgg 5.x)
+# prototyper_profile — Architecture (Elgg 6.x)
 
 ## Summary
 

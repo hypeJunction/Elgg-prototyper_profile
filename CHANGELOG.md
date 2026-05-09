@@ -1,3 +1,11 @@
+## Elgg 6.x Migration (2026-05-09)
+
+- Bumped `elgg/elgg` to `~6.1.0`, `php` to `>=8.1`, added `ext-intl`
+- No JS files — no AMD→ESM conversion needed
+- No deprecated PHP hook functions
+- Added docker/elgg6/ test stack
+- No data migration needed
+
 <a name="5.0.0"></a>
 ## [5.0.0] (2026-05-08)
 
