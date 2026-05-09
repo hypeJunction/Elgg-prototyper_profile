@@ -2,7 +2,7 @@
 	"name": "hypejunction/prototyper_profile",
 	"type": "elgg-plugin",
 	"description": "hypePrototyper integration for Elgg user profiles",
-	"homepage": "http://hypejunction.com",
+	"homepage": "https://github.com/hypeJunction/Elgg-prototyper_profile",
 	"keywords": [
 		"elgg", "plugin", "profile", "profile builder", "form builder", "prototyper"
 	],
@@ -10,7 +10,7 @@
 	"authors": [
 		{
 			"name": "Ismayil Khayredinov",
-			"email": "info@hypejunction.com"
+			"email": "ismayil.khayredinov@gmail.com"
 		}
 	],
 	"extra": {
