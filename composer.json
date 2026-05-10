@@ -1,37 +1,43 @@
 {
-	"name": "hypejunction/prototyper_profile",
-	"type": "elgg-plugin",
-	"description": "hypePrototyper integration for Elgg user profiles",
-	"homepage": "https://github.com/hypeJunction/Elgg-prototyper_profile",
-	"keywords": [
-		"elgg", "plugin", "profile", "profile builder", "form builder", "prototyper"
-	],
-	"license": "GPL-2.0-only",
-	"authors": [
-		{
-			"name": "Ismayil Khayredinov",
-			"email": "ismayil.khayredinov@gmail.com"
-		}
-	],
-	"extra": {
-		"elgg-plugin": {
-			"id": "prototyper_profile"
-		}
-	},
-	"require": {
-		"php": ">=8.3",
-		"ext-intl": "*",
-		"elgg/elgg": "~7.0.0",
-		"composer/installers": "^2.0"
-	},
-	"config": {
-		"allow-plugins": {
-			"composer/installers": true
-		}
-	},
-	"autoload": {
-		"psr-4": {
-			"hypeJunction\\PrototyperProfile\\": "classes/hypeJunction/PrototyperProfile/"
-		}
-	}
+    "name": "hypejunction/prototyper_profile",
+    "type": "elgg-plugin",
+    "description": "hypePrototyper integration for Elgg user profiles",
+    "homepage": "https://github.com/hypeJunction/Elgg-prototyper_profile",
+    "keywords": [
+        "elgg",
+        "plugin",
+        "profile",
+        "profile builder",
+        "form builder",
+        "prototyper"
+    ],
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Ismayil Khayredinov",
+            "email": "ismayil.khayredinov@gmail.com"
+        }
+    ],
+    "extra": {
+        "elgg-plugin": {
+            "id": "prototyper_profile"
+        }
+    },
+    "require": {
+        "php": ">=8.3",
+        "ext-intl": "*",
+        "elgg/elgg": "~7.0.0",
+        "composer/installers": "^2.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "hypeJunction\\PrototyperProfile\\": "classes/hypeJunction/PrototyperProfile/"
+        }
+    },
+    "version": "7.0.0"
 }
