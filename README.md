@@ -1,6 +1,6 @@
 Profile Prototyper for Elgg
 ===========================
-![Elgg 5.x](https://img.shields.io/badge/Elgg-5.x-orange.svg?style=flat-square)
+![Elgg 6.x](https://img.shields.io/badge/Elgg-6.x-orange.svg?style=flat-square)
 
 ## Features
 
@@ -13,3 +13,9 @@ Profile Prototyper for Elgg
 
 * GUI for managing profile form will be available in Admin > Appearance > Edit profile fields,
 once you enable hypePrototyperUI
+
+## Compatibility
+
+| Plugin version | Elgg version |
+|---|---|
+| current | 6.x |
