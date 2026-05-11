@@ -38,6 +38,5 @@
         "psr-4": {
             "hypeJunction\\PrototyperProfile\\": "classes/hypeJunction/PrototyperProfile/"
         }
-    },
-    "version": "7.0.0"
+    }
 }
