@@ -4,7 +4,12 @@
 	"description": "hypePrototyper integration for Elgg user profiles",
 	"homepage": "http://hypejunction.com",
 	"keywords": [
-		"elgg", "plugin", "profile", "profile builder", "form builder", "prototyper"
+		"elgg",
+		"plugin",
+		"profile",
+		"profile builder",
+		"form builder",
+		"prototyper"
 	],
 	"license": "GPL-2.0",
 	"authors": [
@@ -15,6 +20,9 @@
 	],
 	"require-dev": {
 		"composer/installers": "1.*"
+	},
+	"require": {
+		"php": ">=7.2",
+		"elgg/elgg": "^3.0"
 	}
 }
-
